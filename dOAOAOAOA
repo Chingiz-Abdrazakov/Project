@@ -1,0 +1,71 @@
+[1mdiff --git a/Main.c b/Main.c[m
+[1mindex 7f3f427..70bee0c 100644[m
+[1m--- a/Main.c[m
+[1m+++ b/Main.c[m
+[36m@@ -1,4 +1,5 @@[m
+ #include <stdio.h>[m
+[32m+[m[32m#include <assert.h>[m[41m[m
+ [m
+ typedef unsigned char byte; //8 bit[m
+ typedef unsigned short int word; //16 bit[m
+[36m@@ -13,3 +14,52 @@[m [mbyte b_read(Address adr);[m
+ [m
+ void w_write(Address adr, word w);[m
+ word w_read(Address adr);[m
+[32m+[m[41m[m
+[32m+[m[32mvoid test_mem() {[m[41m[m
+[32m+[m	[32mbyte b0 = 0x0a;[m[41m[m
+[32m+[m	[32m//write a byte, read a byte[m[41m[m
+[32m+[m	[32mb_write(2, b0);[m[41m[m
+[32m+[m	[32mbyte bres = b_read(2);[m[41m[m
+[32m+[m[41m[m
+[32m+[m	[32mprintf("%02hhx = %02hhx\n", b0, bres);[m[41m[m
+[32m+[m	[32massert(b0 == bres);[m[41m[m
+[32m+[m[41m[m
+[32m+[m[41m[m
+[32m+[m	[32m//write 2 bytes, read a word[m[41m[m
+[32m+[m	[32mAddress a = 4;[m[41m[m
+[32m+[m	[32mbyte b1 = 0xcb;[m[41m[m
+[32m+[m	[32mb0 = 0x0a;[m[41m[m
+[32m+[m	[32mword w = 0xcb0a;[m[41m[m
+[32m+[m	[32mb_write(a, b0);[m[41m[m
+[32m+[m	[32mb_write(a + 1, b1);[m[41m[m
+[32m+[m	[32mword wres = w_read(a);[m[41m[m
+[32m+[m[41m[m
+[32m+[m	[32mprintf("ww/br \t %04hx = %02hhx%02hhx\n", wres, b1, b0);[m[41m[m
+[32m+[m	[32massert(wres == w);[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m}[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32mint main() {[m[41m[m
+[32m+[m	[32mtest_mem();[m[41m[m
+[32m+[m	[32mreturn 0;[m[41m[m
+[32m+[m[32m}[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m//byte write[m[41m[m
+[32m+[m[32mvoid b_write(Address adr, byte b){[m[41m[m
+[32m+[m	[32mmem[adr] = b;[m[41m[m
+[32m+[m[32m}[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m//byte read[m[41m[m
+[32m+[m[32mbyte b_read(Address adr){[m[41m[m
+[32m+[m	[32mreturn mem[adr];[m[41m[m
+[32m+[m[32m}[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m//word read[m[41m[m
+[32m+[m[32mword w_read(Address adr){[m[41m[m
+[32m+[m	[32mword w = ((word)mem[adr + 1]) << 8;[m[41m[m
+[32m+[m	[32m//printf("w = %x\n", w);[m[41m[m
+[32m+[m	[32mw = w | mem[adr];[m[41m[m
+[32m+[m	[32mreturn w;[m[41m[m
+[32m+[m[32m}[m[41m[m
+[41m+[m
+[41m+[m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 20857fd..756482b 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,2 +1 @@[m
+ #Project for PDP[m
+[31m-<>[m
+\ No newline at end of file[m
