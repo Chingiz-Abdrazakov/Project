@@ -1,6 +1,6 @@
 #include "pdp_func.h"
 #include <stdlib.h>
-#include <strdio.h>
+#include <stdio.h>
 
 word reg[8]; //registers from R0 to R7
 

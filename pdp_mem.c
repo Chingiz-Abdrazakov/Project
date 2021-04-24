@@ -2,6 +2,9 @@
 #include <stdarg.h>
 #include <errno.h> 
 #include <assert.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 
 byte mem[MEMSIZE];
@@ -57,7 +60,7 @@ void load_file(const char * filename) {
 		for(int i = 0; i < (int)n; ++i){
 			fscanf(fin, "%hhx", &b);
 
-			b_write(a + Address(i), b);
+			b_write(a + (Address)i, b);
 		}
 	}
 
