@@ -1,5 +1,7 @@
 #include "pdp_mem.h"
 #include <stdarg.h>
+#include <errno.h> 
+#include <assert.h>
 
 
 byte mem[MEMSIZE];
@@ -30,26 +32,43 @@ void w_write(Address adr, word w) {
 }
 
 
-void load_file() {
-	while(1 == 1){
-		Address a;
-		word n;	
-		int y = scanf("%hx %hx", &a, &n);
+void load_file(const char * filename) { 
+	FILE * fin = fopen(filename, "r"); //Reading data from file
 
-		if(y != 2){
+	if(errno) { //Whether there is an error
+		char * error_message =
+		 malloc(sizeof(char) * (strlen(filename) + 90));
+		sprintf(error_message, "Cannot open the file: %s", filename);
+
+		perror(error_message);
+		free(error_message);
+		exit(errno);
+	}
+
+
+	//If not
+	Address a;
+	word n;	
+	byte b;
+	while(1){ //Read from stream
+		if(2 != scanf("%hx%hx", &a, &n)) {
 			break;
 		}
 		for(int i = 0; i < (int)n; ++i){
-			byte b;
-			scanf("%hhx", &b);
-			b_write(a + (Address)i, b);	
+			fscanf(fin, "%hhx", &b);
+
+			b_write(a + Address(i), b);
 		}
 	}
+
+	fclose(fin); // Close the stream
 }
 
 void mem_dump(Address start, word n){
 	for(int i = 0; i < (int)n; i += 2){
 		printf("%06o : %06o\n", (start + i), w_read(start + i));
 	}
+	printf("\n");
 }
 
+	
