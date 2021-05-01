@@ -16,7 +16,8 @@ void run() {
 		pc += 2;
 
 		int i = 0;
-		while(compare(w, cmd[i].mask, cmd[i].opcode) != 1) {
+		while((w & cmd[i].mask) != (cmd[i]).opcode) {
+			trace("%s", cmd[i].name);
 			i++;
 		}
 

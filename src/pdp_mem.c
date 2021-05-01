@@ -55,7 +55,8 @@ void load_file(const char * filename) {
 	byte b;
 	while(1){ //Read from stream
 		if(2 != scanf("%hx%hx", &a, &n)) {
-			break;
+			//trace("");
+			exit(1);
 		}
 		for(int i = 0; i < (int)n; ++i){
 			fscanf(fin, "%hhx", &b);

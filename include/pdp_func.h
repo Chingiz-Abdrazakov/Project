@@ -24,7 +24,9 @@ typedef struct {
 	Argument dd;
 	word is_byte;
 } Operand;
+// Command, get params, get, struct, operand, argument
 
+//register info, trace, debug оставить
 typedef struct {
 	word mask;
 	word opcode;
