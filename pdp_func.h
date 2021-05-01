@@ -9,13 +9,7 @@ typedef word Address; //16 bit
 
 void trace(const char* format, ...);
 
-void do_halt();
-
-void do_mov();
-
-void do_add();
-
-void do_nothing();
+void debug(const char * format, ...);
 
 void run();
 

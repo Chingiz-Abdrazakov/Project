@@ -11,23 +11,14 @@ void trace(const char * format, ...) {
 	va_end(ap);
 }
 
-void do_halt() {
-	trace("THE END!!!\n");
-	exit(0);
+void debug(const char* format, ...) { // Пока что аналогично trace,
+// может в процессе пойму разницу
+	va_list ap;
+	va_start(ap, format);
+	vprintf(format, ap);
+	va_end(ap);
 }
 
-void do_mov() {
-	trace("\n");
-	
-}
-
-void do_add() {
-
-}
-
-void do_nothing() {
-
-}
 
 
 Command cmd[] = {
