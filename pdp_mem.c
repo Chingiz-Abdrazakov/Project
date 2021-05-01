@@ -38,7 +38,7 @@ void w_write(Address adr, word w) {
 void load_file(const char * filename) { 
 	FILE * fin = fopen(filename, "r"); //Reading data from file
 
-	if(errno) { //Whether there is an error
+	if(fin == NULL) { //Whether there is an error
 		char * error_message =
 		 malloc(sizeof(char) * (strlen(filename) + 90));
 		sprintf(error_message, "Cannot open the file: %s", filename);

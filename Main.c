@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <assert.h>
+#include "pdp_func.h"
+#include "pdp_mem.h"
+#include "pdp_run.h"
+#include "pdp_do.h"
 
 typedef unsigned char byte; //8 bit
 typedef unsigned short int word; //16 bit
@@ -47,8 +51,11 @@ void test_mem() {
 
 }
 
-int main() {
-	test_mem();
+int main(int argc, char * argv) {
+	load_file();
+
+
 	return 0;
 }
 
+	
