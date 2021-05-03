@@ -13,4 +13,6 @@ void do_mov();
 
 void do_add();
 
+void do_sob();
+
 void do_nothing();

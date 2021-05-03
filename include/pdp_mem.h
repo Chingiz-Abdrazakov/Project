@@ -12,5 +12,5 @@ byte b_read(Address adr);
 void w_write(Address adr, word w);
 word w_read(Address adr);
 
-void load_file();
+void load_file(const char * filename);
 void mem_dump(Address start, word n);

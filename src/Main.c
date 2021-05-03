@@ -54,9 +54,7 @@ void test_mem() {
 int main(int argc, char * argv) {
 	load_file("./sum01.o");
 	run();
-
+	register_info();
 
 	return 0;
 }
-
-	
