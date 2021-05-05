@@ -20,9 +20,7 @@ void do_mov(Operand op) {
 	else {
 		w_write(op.dd.adr, op.ss.val);
 	}
-
-
-
+	register_info();
 
 	// NZVC **0-
 	set_n(op.ss.val, op.is_byte);
@@ -85,10 +83,13 @@ void do_clr(Operand op) {
 
 void do_sob(Operand op) {
 	trace("\n");
+
 	reg[op.r] -= 1;
 	if(reg[op.r] != 0) {
 		pc -= 2 * op.nn;
 	}
+
+	trace(" R%o = %o, PC = %o.\n", op.r, reg[op.r], pc);
 
 	// NZVC ----
 }

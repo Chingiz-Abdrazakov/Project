@@ -58,7 +58,7 @@ void mode1(int r, Argument *res) {
 }
 
 void mode2(int r, Argument *res) {
-	
+
 	res->adr = reg[r];
 	if(check_is_byte(reg[r]) && r < 6) {
 		// Check whether it is a byte
@@ -183,7 +183,7 @@ void run() {
 
 	while(1) {
 		word w = w_read(pc);
-		trace("%06o: ", pc);
+		trace("%06o %06o: ", pc, w);
 		pc += 2;
 
 		int i = 0;
