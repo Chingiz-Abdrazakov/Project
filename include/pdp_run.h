@@ -7,6 +7,7 @@
 #define HAS_DD 1
 #define HAS_SS 2
 #define HAS_N 4
+#define HAS_R 8
 
 
 // Struct definition
@@ -18,6 +19,7 @@ typedef struct {
 typedef struct {
 	Argument ss;
 	Argument dd;
+	unsigned char r;
 	unsigned char nn;
 	word is_byte;
 } Operand;
@@ -52,14 +54,6 @@ int compare(word w, word mask, word opcode);
 
 int check_is_byte(word w);
 
-// Flags
-void set_n();
-
-void set_z();
-
-void set_v();
-
-void set_c();
 
 // Modes
 void mode0(int r, Argument * res);

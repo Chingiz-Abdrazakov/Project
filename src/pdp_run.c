@@ -8,8 +8,17 @@
 
 Command cmd[] = {
 	{ 0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov },
+	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_movb },
 	{ 0170000, 0060000, "add", HAS_DD | HAS_SS, do_add },
-	{ 0177000, 0077000, "sob", HAS_N, do_sob },
+	{ 0177000, 0077000, "sob", HAS_R | HAS_N, do_sob },
+
+	{ 0177700, 0005000, "clr", HAS_DD, do_clr},
+
+	{ 0177777, 000257, "ccc", NO_PARAMS, do_ccc},
+	{ 0177777, 000250, "cln", NO_PARAMS, do_cln},
+	{ 0177777, 000244, "clz", NO_PARAMS, do_clz},
+	{ 0177777, 000241, "clc", NO_PARAMS, do_clc},
+
 	{ 0177777, 0000000, "halt", NO_PARAMS, do_halt },
 	{ 0000000, 0000000, "unknown", NO_PARAMS, do_nothing }
 };
@@ -23,27 +32,6 @@ int check_is_byte(word w) {
 	return ((w >> 15) & 1);
 }
 
-void set_n(size_t val, word w) {
-	if(check_is_byte(w)) {
-		psw.n = (val >> 7) & 1;
-	}
-	else {
-		psw.n = (val >> 15) & 1;
-	}
-}
-
-void set_z(size_t val) {
-	psw.z = (val == 0);
-}
-
-void set_c(size_t val, word w) {
-	if(check_is_byte(w)) {
-		psw.c = (val >> 8) & 1;
-	}
-	else {
-		psw.c = (val >> 16) & 1; 
-	}
-}
 
 void mode0(int r, Argument *res) {
 	res->adr = r;
@@ -163,15 +151,22 @@ Operand get_params(word w, char parameters) {
 
 	if((parameters & HAS_SS) == HAS_SS) {
 		result.ss = get_modereg(w >> 6);
+		trace("%06o ", result.ss);
 	}
 
 	if((parameters & HAS_DD) == HAS_DD) {
 		result.dd = get_modereg(w);
+		trace("%06o ", result.dd);
 	}
 
 	if((parameters & HAS_N) == HAS_N) {
 		result.nn = w & 077;
 		trace("%06o ", (pc - 2 * result.nn));
+	}
+
+	if((parameters & HAS_R) == HAS_R) {
+		result.r = (w >> 6) & 1;
+		trace("%06o, ", result.r);
 	}
 
 	result.is_byte = (w >> 15) & 1;
@@ -192,11 +187,12 @@ void run() {
 		int i = 0;
 		while(1) {
 			if((w & cmd[i].mask) == (cmd[i]).opcode) {
-				trace("%s ", (cmd[i]).name);
+				trace("%s      ", (cmd[i]).name);
 				op = get_params(w, (cmd[i]).params);
 				(cmd[i]).do_func(op);
 
-				trace("%s", cmd[i].name);
+
+				
 				break;
 			}
 			

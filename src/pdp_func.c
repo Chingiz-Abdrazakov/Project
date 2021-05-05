@@ -11,6 +11,8 @@ word reg[8]; //registers from R0 to R7
 // pc definition
 Operand op;
 
+PSW psw;
+
 void trace(const char * format, ...) {
 	va_list ap;
 	va_start(ap, format);
@@ -35,13 +37,29 @@ void register_info() {
 		reg[0], reg[1], reg[2], reg[3],
 		reg[4], reg[5], reg[6], reg[7]
 	);
+	printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
+}
+
+void set_n(size_t val, word w) {
+	if(check_is_byte(w)) {
+		psw.n = (val >> 7) & 1;
+	}
+	else {
+		psw.n = (val >> 15) & 1;
+	}
+}
+
+void set_z(size_t val) {
+	psw.z = (val == 0);
+}
+
+void set_c(size_t val, word w) {
+	if(check_is_byte(w)) {
+		psw.c = (val >> 8) & 1;
+	}
+	else {
+		psw.c = (val >> 16) & 1; 
+	}
 }
 
 
-
-
-
-
-
-
-	
