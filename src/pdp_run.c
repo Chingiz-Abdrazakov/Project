@@ -8,7 +8,7 @@
 
 Command cmd[] = {
 	{ 0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov },
-	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_movb },
+	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov },
 	{ 0170000, 0060000, "add", HAS_DD | HAS_SS, do_add },
 	{ 0177000, 0077000, "sob", HAS_R | HAS_N, do_sob },
 
@@ -58,7 +58,7 @@ void mode1(int r, Argument *res) {
 }
 
 void mode2(int r, Argument *res) {
-
+	
 	res->adr = reg[r];
 	if(check_is_byte(reg[r]) && r < 6) {
 		// Check whether it is a byte
@@ -72,7 +72,7 @@ void mode2(int r, Argument *res) {
 	}
 	
 	if(r == 7) {
-		trace("#%o ", res->val);
+		trace("#%06o ", res->val);
 	}
 	else {
 		trace("(R%o)+ ", r);
@@ -151,22 +151,22 @@ Operand get_params(word w, char parameters) {
 
 	if((parameters & HAS_SS) == HAS_SS) {
 		result.ss = get_modereg(w >> 6);
-		trace("%06o ", result.ss);
+		//trace("%06o ", result.ss);
 	}
 
 	if((parameters & HAS_DD) == HAS_DD) {
 		result.dd = get_modereg(w);
-		trace("%06o ", result.dd);
+		//trace("%06o ", result.dd);
 	}
 
 	if((parameters & HAS_N) == HAS_N) {
 		result.nn = w & 077;
-		trace("%06o ", (pc - 2 * result.nn));
+		//trace("%06o ", (pc - 2 * result.nn));
 	}
 
 	if((parameters & HAS_R) == HAS_R) {
 		result.r = (w >> 6) & 1;
-		trace("%06o, ", result.r);
+		//trace("%06o, ", result.r);
 	}
 
 	result.is_byte = (w >> 15) & 1;
@@ -177,17 +177,19 @@ Operand get_params(word w, char parameters) {
 
 
 void run() {
+	trace("      ----------running---------    \n");
+
 	pc = 01000;
 
 	while(1) {
 		word w = w_read(pc);
-		trace("%06o %06o: ", pc, w);
+		trace("%06o: ", pc);
 		pc += 2;
 
 		int i = 0;
 		while(1) {
 			if((w & cmd[i].mask) == (cmd[i]).opcode) {
-				trace("%s      ", (cmd[i]).name);
+				trace("%s ", (cmd[i]).name);
 				op = get_params(w, (cmd[i]).params);
 				(cmd[i]).do_func(op);
 
