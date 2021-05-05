@@ -8,7 +8,9 @@
 #include <stdlib.h>
 
 byte mem[MEMSIZE];
-//byte write
+
+// Functions to operate bytes and words
+
 void b_write(Address adr, byte b) {
 	if (adr < 8) {
 		reg[adr] = b;
@@ -16,7 +18,6 @@ void b_write(Address adr, byte b) {
 	mem[adr] = b;
 }
 
-//byte read
 byte b_read(Address adr) {
 	if (adr < 8) {
 		return reg[adr];
@@ -24,7 +25,6 @@ byte b_read(Address adr) {
 	return mem[adr];
 }
 
-//word read
 word w_read(Address adr) {
 	if (adr < 8) {
 		return reg[adr];
@@ -37,7 +37,6 @@ word w_read(Address adr) {
 }
 
 
-//word write
 void w_write(Address adr, word w) {
 	if (adr < 8) {
 		reg[adr] = w;

@@ -2,14 +2,14 @@
 
 
 
-// for functions
+// For functions
 #define NO_PARAMS 0
 #define HAS_DD 1
 #define HAS_SS 2
 #define HAS_N 4
 
 
-//struct definition
+// Struct definition
 typedef struct {
 	word adr;
 	word val;
@@ -28,20 +28,38 @@ typedef struct {
 	char * name;
 	char params;
 	void (* do_func)(Operand op);
-} Command; // Commands for pdp11
+} Command; 
+
+
+typedef struct {
+	byte n;
+	byte z;
+	byte v;
+	byte c;
+} PSW;
 
 
 
-// Extern variables definition
+// Extern variables
 
 extern word reg[8];
 extern Operand op;
 extern Command cmd[];
+extern PSW psw;
 
 
 int compare(word w, word mask, word opcode);
 
 int check_is_byte(word w);
+
+// Flags
+void set_n();
+
+void set_z();
+
+void set_v();
+
+void set_c();
 
 // Modes
 void mode0(int r, Argument * res);

@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Commands
 
 Command cmd[] = {
 	{ 0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov },
@@ -24,6 +23,27 @@ int check_is_byte(word w) {
 	return ((w >> 15) & 1);
 }
 
+void set_n(size_t val, word w) {
+	if(check_is_byte(w)) {
+		psw.n = (val >> 7) & 1;
+	}
+	else {
+		psw.n = (val >> 15) & 1;
+	}
+}
+
+void set_z(size_t val) {
+	psw.z = (val == 0);
+}
+
+void set_c(size_t val, word w) {
+	if(check_is_byte(w)) {
+		psw.c = (val >> 8) & 1;
+	}
+	else {
+		psw.c = (val >> 16) & 1; 
+	}
+}
 
 void mode0(int r, Argument *res) {
 	res->adr = r;
@@ -44,6 +64,9 @@ void mode1(int r, Argument *res) {
 	}
 
 	trace("R%o ", r);
+
+
+
 }
 
 void mode2(int r, Argument *res) {
