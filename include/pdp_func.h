@@ -1,10 +1,6 @@
 #pragma once
 #include <stddef.h>
-
-// types definition
-typedef unsigned char byte; //8 bit
-typedef unsigned short int word; //16 bit
-typedef word Address; //16 bit
+#include "pdp.h"
 
 extern word reg[8];
 #define pc reg[7]
