@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+word __is_byte;
 
 Command cmd[] = {
 	{ 0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov },
-	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_mov },
+	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_movb },
 	{ 0170000, 0060000, "add", HAS_DD | HAS_SS, do_add },
 	{ 0177000, 0077000, "sob", HAS_R | HAS_N, do_sob },
 
@@ -42,7 +43,7 @@ void mode0(int r, Argument *res) {
 
 void mode1(int r, Argument *res) {
 	res->adr = reg[r];
-	if(check_is_byte(reg[r])) {
+	if(__is_byte) {
 		// Check whether it is a byte
 		res->val = b_read(res->adr);
 	}
@@ -52,17 +53,14 @@ void mode1(int r, Argument *res) {
 	}
 
 	trace("R%o ", r);
-
-
-
 }
 
 void mode2(int r, Argument *res) {
 
 	res->adr = reg[r];
-	if(check_is_byte(reg[r]) && r < 6) {
+	if(__is_byte && r < 6) {
 		// Check whether it is a byte
-		res->val = b_read(res->adr); 
+		res->val = b_read(res->adr);
 		reg[r] += 1;
 	}
 	else {
@@ -93,7 +91,7 @@ void mode4(int r, Argument * res) {
 		exit(1);
 	}
 
-	if(check_is_byte(reg[r]) && r < 6) {
+	if(__is_byte && r < 6) {
 		reg[r] -= 1;
 		res->adr = reg[r];
 		res->val = b_read(res->adr);
@@ -183,13 +181,16 @@ void run() {
 
 	while(1) {
 		word w = w_read(pc);
-		trace("%06o %06o: ", pc, w);
+		trace("%06o: ", pc);
+
+		__is_byte = check_is_byte(w);
 		pc += 2;
 
 		int i = 0;
 		while(1) {
 			if((w & cmd[i].mask) == (cmd[i]).opcode) {
 				trace("%s ", (cmd[i]).name);
+
 				op = get_params(w, (cmd[i]).params);
 				(cmd[i]).do_func(op);
 

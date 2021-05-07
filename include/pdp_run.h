@@ -48,7 +48,7 @@ extern word reg[8];
 extern Operand op;
 extern Command cmd[];
 extern PSW psw;
-
+extern word __is_byte;
 
 int compare(word w, word mask, word opcode);
 

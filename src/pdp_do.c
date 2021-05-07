@@ -14,12 +14,18 @@ void do_halt(Operand op) {
 void do_mov(Operand op) {
 	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
 
-	if(op.is_byte) {
-		b_write(op.dd.adr, op.ss.val);
-	}
-	else {
-		w_write(op.dd.adr, op.ss.val);
-	}
+	w_write(op.dd.adr, op.ss.val);
+	register_info();
+
+	// NZVC **0-
+	set_n(op.ss.val, op.is_byte);
+	set_z(op.ss.val);
+}
+
+void do_movb(Operand op) {
+	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
+
+	b_write(op.dd.adr, op.ss.val);
 	register_info();
 
 	// NZVC **0-
@@ -29,11 +35,12 @@ void do_mov(Operand op) {
 
 void do_add(Operand op) {
 	trace("      R%o = R%o + R%o.\n", op.dd.adr, op.dd.adr, op.ss.adr);
-
+	
 	word w = w_read(op.dd.adr);
 	w += op.ss.val;
-
 	w_write(op.dd.adr, w);
+
+	register_info();
 
 	// NZVC ****
 	set_n(w, op.is_byte);
