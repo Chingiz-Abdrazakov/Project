@@ -82,7 +82,12 @@ void mode3(int r, Argument * res) {
 	res->val = w_read(res->adr);
 	reg[r] += 2;
 
-	trace("@#%o ", res->adr);
+	if(r == 7) {
+		trace("@#%o ", res->adr);
+	}
+	else {
+		trace("@(R%o)+ ", res->adr);
+	}
 }
 
 void mode4(int r, Argument * res) {

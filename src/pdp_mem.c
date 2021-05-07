@@ -13,7 +13,15 @@ byte mem[MEMSIZE];
 
 void b_write(Address adr, byte b) {
 	if (adr < 8) {
-		reg[adr] = b;
+		if((b >> 7) == 0) {
+			reg[adr] = (word)b;
+		}
+		else {
+			reg[adr] = (word)b | 0177400;
+		}
+
+		return;
+
 	}
 	mem[adr] = b;
 }
