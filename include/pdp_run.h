@@ -1,4 +1,5 @@
 #pragma once
+#include <stddef.h>
 
 
 
@@ -8,6 +9,7 @@
 #define HAS_SS 2
 #define HAS_N 4
 #define HAS_R 8
+#define HAS_XX 16
 
 
 // Struct definition
@@ -21,6 +23,7 @@ typedef struct {
 	Argument dd;
 	unsigned char r;
 	unsigned char nn;
+	unsigned int xx;
 	word is_byte;
 } Operand;
 

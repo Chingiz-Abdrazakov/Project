@@ -13,7 +13,9 @@ void debug(const char * format, ...);
 
 void register_info();
 
+void flags_info();
 
+void all_info();
 // Flags
 void set_n(size_t val, word w);
 

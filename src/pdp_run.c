@@ -4,7 +4,7 @@
 #include "pdp_do.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+	
 word __is_byte;
 
 Command cmd[] = {
@@ -12,8 +12,21 @@ Command cmd[] = {
 	{ 0170000, 0110000, "movb", HAS_DD | HAS_SS, do_movb },
 	{ 0170000, 0060000, "add", HAS_DD | HAS_SS, do_add },
 	{ 0177000, 0077000, "sob", HAS_R | HAS_N, do_sob },
+	{ 0170000, 0020000, "cmp", HAS_DD | HAS_SS, do_cmp },
+	{ 0170000, 0120000, "cmpb", HAS_DD | HAS_SS, do_cmpb },
+	
 
 	{ 0177700, 0005000, "clr", HAS_DD, do_clr},
+	{ 0177700, 0005700, "tst", HAS_DD, do_tst},
+	{ 0177700, 0105700, "tstb", HAS_DD, do_tstb},
+
+	{ 0177400, 0000400, "br", HAS_XX, do_br},
+	{ 0177400, 0001400, "beq", HAS_XX, do_beq},
+	{ 0177400, 0001000, "bne", HAS_XX, do_bne},
+	{ 0177400, 0100400, "bmi", HAS_XX, do_bmi},
+	{ 0177400, 0100000, "bpl", HAS_XX, do_bpl},
+	{ 0177400, 0103000, "bhis", HAS_XX, do_bhis},
+	{ 0177400, 0103400, "blo", HAS_XX, do_blo},
 
 	{ 0177777, 000257, "ccc", NO_PARAMS, do_ccc},
 	{ 0177777, 000250, "cln", NO_PARAMS, do_cln},
@@ -159,17 +172,22 @@ Operand get_params(word w, char parameters) {
 
 	if((parameters & HAS_DD) == HAS_DD) {
 		result.dd = get_modereg(w);
-		//trace("%06o ", result.dd);
+		// trace("%06o ", result.dd);
 	}
 
 	if((parameters & HAS_N) == HAS_N) {
 		result.nn = w & 077;
-		//trace("%06o ", (pc - 2 * result.nn));
+		// trace("%06o ", (pc - 2 * result.nn));
 	}
 
 	if((parameters & HAS_R) == HAS_R) {
 		result.r = (w >> 6) & 1;
-		//trace("%06o, ", result.r);
+		// trace("%06o, ", result.r);
+	}
+
+	if((parameters & HAS_XX) == HAS_XX) {
+		result.xx = w & 0777;
+		// trace("%06o ", result.xx);
 	}
 
 	result.is_byte = (w >> 15) & 1;
@@ -187,6 +205,7 @@ void run() {
 	while(1) {
 		word w = w_read(pc);
 		trace("%06o: ", pc);
+		//trace("%06o, %06o: ", pc, w);
 
 		__is_byte = check_is_byte(w);
 		pc += 2;

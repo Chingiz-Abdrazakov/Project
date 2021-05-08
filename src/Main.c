@@ -4,10 +4,7 @@
 #include "pdp_mem.h"
 #include "pdp_run.h"
 #include "pdp_do.h"
-
-typedef unsigned char byte; //8 bit
-typedef unsigned short int word; //16 bit
-typedef word Address; //16 bit
+#include "pdp.h"
 
 #define MEMSIZE (64 * 1024)
 

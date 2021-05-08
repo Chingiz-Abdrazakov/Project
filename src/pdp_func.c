@@ -37,6 +37,9 @@ void register_info() {
 		reg[0], reg[1], reg[2], reg[3],
 		reg[4], reg[5], reg[6], reg[7]
 	);
+}
+
+void flags_info() {
 	printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
 }
 
@@ -63,3 +66,7 @@ void set_c(size_t val, word w) {
 }
 
 
+void all_info() {
+	register_info();
+	flags_info();
+}
