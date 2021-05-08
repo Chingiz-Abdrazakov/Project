@@ -23,3 +23,4 @@ void set_z(size_t val);
 
 void set_c(size_t val, word w);
 
+void get_console_arguments(int argc, char * argv[]);

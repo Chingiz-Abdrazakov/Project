@@ -70,3 +70,9 @@ void all_info() {
 	register_info();
 	flags_info();
 }
+
+void get_console_arguments(int argc, char * argv[]) {	
+	for(int i = 0; i < argc; ++i) {
+		load_file(argv[i]);
+	}
+}

@@ -57,8 +57,8 @@ void w_write(Address adr, word w) {
 
 
 void load_file(const char * filename) { 
-	FILE * fin = fopen(filename, "r"); //Reading data from file
-	if(fin == NULL) { //Whether there is an error
+	FILE * fin = fopen(filename, "r"); // Reading data from file
+	if(fin == NULL) { // Whether there is an error
 		char * error_message =
 				malloc(sizeof(char) * (strlen(filename) + 90));
 		
@@ -74,12 +74,7 @@ void load_file(const char * filename) {
 	Address a;
 	word n;	
 	byte b;
-	while(1){ //Read from stream
-		if(2 != fscanf(fin, "%hx%hx", &a, &n)) {
-			//trace("");
-			return;
-		}
-
+	while(2 == fscanf(fin, "%hx%hx", &a, &n)){ //Read from stream
 		for(int i = 0; i < (int)n; ++i){
 			fscanf(fin, "%hhx", &b);
 			b_write(a + (Address)i, b);

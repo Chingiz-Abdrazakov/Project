@@ -208,6 +208,5 @@ void do_nop(Operand op) {
 
 void do_nothing() {
 	trace(" -- unknown command\n");
-	return;
+	exit(0);
 }
-

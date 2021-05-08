@@ -48,8 +48,8 @@ void test_mem() {
 
 }
 
-int main(int argc, char * argv) {
-	load_file("./sum01.o");
+int main(int argc, char * argv[]) {
+	get_console_arguments(argc, argv);
 	run();
 
 	return 0;
