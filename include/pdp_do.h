@@ -1,9 +1,6 @@
 #pragma once
 #include "pdp.h"
 
-
-
-
 //All the "do" functions
 
 void do_halt();

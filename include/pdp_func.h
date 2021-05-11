@@ -23,4 +23,7 @@ void set_z(size_t val);
 
 void set_c(size_t val, word w);
 
+// Program usage directives
+void instruction_print();
+
 void get_console_arguments(int argc, char * argv[]);

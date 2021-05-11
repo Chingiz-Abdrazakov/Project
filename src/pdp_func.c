@@ -71,7 +71,17 @@ void all_info() {
 	flags_info();
 }
 
-void get_console_arguments(int argc, char * argv[]) {	
+void instruction_print() {
+	// Programm usage
+	printf("Usage: pdp11.exe [-t tracing-turn-on] assembly-file\n\n");
+}
+
+void get_console_arguments(int argc, char * argv[]) {
+	if(argc == 1) {
+		instruction_print();
+		exit(0);
+	}
+
 	for(int i = 0; i < argc; ++i) {
 		load_file(argv[i]);
 	}

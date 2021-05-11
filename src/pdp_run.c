@@ -4,8 +4,11 @@
 #include "pdp_do.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 	
 word __is_byte;
+
+
 
 Command cmd[] = {
 	{ 0170000, 0010000, "mov", HAS_DD | HAS_SS, do_mov },
@@ -202,10 +205,15 @@ void run() {
 
 	pc = 01000;
 
+	word cur_capacity = 100;
+	char * str = malloc((cur_capacity + 1) * sizeof(char));
+	word cur_used_capacity = 0;
+
 	while(1) {
 		word w = w_read(pc);
 		trace("%06o: ", pc);
 		//trace("%06o, %06o: ", pc, w);
+		
 
 		__is_byte = check_is_byte(w);
 		pc += 2;
@@ -216,17 +224,35 @@ void run() {
 				trace("%s ", (cmd[i]).name);
 
 				op = get_params(w, (cmd[i]).params);
+
+				if(cmd[i].name == "halt") {
+					printf("%s\n", str);
+					free(str);
+				}
+
+
+				if(cmd[i].name == "movb" && ((w >> 3) & 7) == 3) {
+					// add (char)op.ss.val;
+					// strcat(str, l);
+					if (cur_used_capacity < cur_capacity) {
+						str[cur_used_capacity++] = (char)op.ss.val;
+
+					} else {
+						str = realloc(str, cur_capacity * sizeof(char));
+					}
+				}
 				(cmd[i]).do_func(op);
 
 
-				
+
+
 				break;
 			}
 			
 			i++;
 		}
 	}
+
+
+
 }
-
-
-

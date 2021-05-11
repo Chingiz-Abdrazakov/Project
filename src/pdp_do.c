@@ -11,6 +11,7 @@ void do_halt(Operand op) {
 	register_info();
 	flags_info();
 
+	
 	exit(0);
 }
 
@@ -18,6 +19,7 @@ void do_mov(Operand op) {
 	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
 
 	w_write(op.dd.adr, op.ss.val);
+	//printf("%c", (char)op.ss.val);
 
 	// NZVC **0-
 	set_n(op.ss.val, op.is_byte);
@@ -30,6 +32,7 @@ void do_movb(Operand op) {
 	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
 
 	b_write(op.dd.adr, op.ss.val);
+	//printf("%c", (char)op.ss.val);
 
 	// NZVC **0-
 	set_n(op.ss.val, op.is_byte);
@@ -135,13 +138,13 @@ void do_bne(Operand op) {
 }
 
 void do_bmi(Operand op) {
-	if(psw.n) {
+	if(!psw.n) {
 		do_br(op);
 	}
 }
 
 void do_bpl(Operand op) {
-	if(!psw.n) {
+	if(psw.n) {
 		do_br(op);
 	}
 }

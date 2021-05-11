@@ -10,8 +10,6 @@
 #define HAS_N 4
 #define HAS_R 8
 #define HAS_XX 16
-#define ostat 177564
-#define odata 177566
 
 
 // Struct definition
