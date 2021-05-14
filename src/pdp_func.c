@@ -11,18 +11,17 @@ word reg[8]; //registers from R0 to R7
 
 // pc definition
 Operand op;
-
+int command_flag;
 PSW psw;
 
-void trace(int command_flag, const char * format, ...) {
-	if(command_flag == 1) {
-		va_list ap;
-		va_start(ap, format);
-		vprintf(format, ap);
-		va_end(ap);
+void trace(const char * format, ...) {
+	if(!command_flag) {
+		return;
 	}
-	return;
-
+	va_list ap;
+	va_start(ap, format);
+	vprintf(format, ap);
+	va_end(ap);
 }
 
 void debug(const char* format, ...) { // Пока что аналогично trace,
@@ -33,7 +32,7 @@ void debug(const char* format, ...) { // Пока что аналогично tr
 	va_end(ap);
 }
 
-void register_info(int command_flag) {
+void register_info() {
 	if(command_flag) {
 		printf(
 			"Registers info: \
@@ -46,7 +45,7 @@ void register_info(int command_flag) {
 	}
 }
 
-void flags_info(int command_flag) {
+void flags_info() {
 	if(command_flag) {
 		printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
 	}
@@ -76,9 +75,9 @@ void set_c(size_t val, word w) {
 }
 
 
-void all_info(int command_flag) {
-	register_info(command_flag);
-	flags_info(command_flag);
+void all_info() {
+	register_info();
+	flags_info();
 }
 
 void instruction_print() {

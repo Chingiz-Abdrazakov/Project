@@ -56,7 +56,7 @@ void mode0(int r, Argument *res) {
 	res->adr = r;
 	res->val = reg[r];
 
-	trace(command_flag, "R%o ", r);
+	trace("R%o ", r);
 }
 
 void mode1(int r, Argument *res) {
@@ -70,7 +70,7 @@ void mode1(int r, Argument *res) {
 		res->val = w_read(res->adr);
 	}
 
-	trace(command_flag, "R%o ", r);
+	trace("R%o ", r);
 }
 
 void mode2(int r, Argument *res) {
@@ -88,10 +88,10 @@ void mode2(int r, Argument *res) {
 	}
 	
 	if(r == 7) {
-		trace(command_flag, "#%06o ", res->val);
+		trace("#%06o ", res->val);
 	}
 	else {
-		trace(command_flag, "(R%o)+ ", r);
+		trace("(R%o)+ ", r);
 	}
 }
 
@@ -101,16 +101,16 @@ void mode3(int r, Argument * res) {
 	reg[r] += 2;
 
 	if(r == 7) {
-		trace(command_flag, "@#%o ", res->adr);
+		trace("@#%o ", res->adr);
 	}
 	else {
-		trace(command_flag, "@(R%o)+ ", res->adr);
+		trace("@(R%o)+ ", res->adr);
 	}
 }
 
 void mode4(int r, Argument * res) {
 	if(r == 7 && pc == 8) {
-		trace(command_flag, " -- Out of register range, program crashed\n");
+		trace(" -- Out of register range, program crashed\n");
 		exit(1);
 	}
 
@@ -126,10 +126,10 @@ void mode4(int r, Argument * res) {
 	}
 
 	if(r == 7) {
-		trace(command_flag, "-(pc) ", res->val);
+		trace("-(pc) ", res->val);
 	}
 	else {
-		trace(command_flag, "-(R%o) ", r);
+		trace("-(R%o) ", r);
 	}
 }
 
@@ -203,7 +203,7 @@ Operand get_params(word w, char parameters) {
 
 
 void run() {
-	trace(command_flag, "      ----------running---------    \n");
+	trace("      ----------running---------    \n");
 
 	pc = 01000;
 
@@ -213,7 +213,7 @@ void run() {
 
 	while(1) {
 		word w = w_read(pc);
-		trace(command_flag, "%06o: ", pc);
+		trace("%06o: ", pc);
 		//trace("%06o, %06o: ", pc, w);
 		
 
@@ -223,7 +223,7 @@ void run() {
 		int i = 0;
 		while(1) {
 			if((w & cmd[i].mask) == (cmd[i]).opcode) {
-				trace(command_flag, "%s ", (cmd[i]).name);
+				trace("%s ", (cmd[i]).name);
 
 				op = get_params(w, (cmd[i]).params);
 
@@ -234,10 +234,9 @@ void run() {
 
 
 				if(cmd[i].name == "movb" && ((w >> 3) & 7) == 3) {
-					// add (char)op.ss.val;
-					// strcat(str, l);
 					if (cur_used_capacity < cur_capacity) {
 						str[cur_used_capacity++] = (char)op.ss.val;
+						//printf("%c\n", (char)op.ss.val);
 
 					} else {
 						str = realloc(str, cur_capacity * sizeof(char));

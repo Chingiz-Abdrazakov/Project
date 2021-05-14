@@ -74,7 +74,7 @@ void load_file(const char * filename) {
 	Address a;
 	word n;	
 	byte b;
-	while(2 == fscanf(fin, "%hx%hx", &a, &n)){ //Read from stream
+	while(2 == fscanf(fin, "%hx%hx", &a, &n)){ // Read from stream
 		for(int i = 0; i < (int)n; ++i){
 			fscanf(fin, "%hhx", &b);
 			b_write(a + (Address)i, b);
