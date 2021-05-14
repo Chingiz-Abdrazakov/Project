@@ -7,15 +7,15 @@ extern word reg[8];
 
 
 // Functions definition
-void trace(const char* format, ...);
+void trace(int command_flag, const char* format, ...);
 
 void debug(const char * format, ...);
 
-void register_info();
+void register_info(int command_flag);
 
-void flags_info();
+void flags_info(int command_flag);
 
-void all_info();
+void all_info(int command_flag);
 // Flags
 void set_n(size_t val, word w);
 

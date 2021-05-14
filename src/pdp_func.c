@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 
 word reg[8]; //registers from R0 to R7
@@ -13,11 +14,15 @@ Operand op;
 
 PSW psw;
 
-void trace(const char * format, ...) {
-	va_list ap;
-	va_start(ap, format);
-	vprintf(format, ap);
-	va_end(ap);
+void trace(int command_flag, const char * format, ...) {
+	if(command_flag == 1) {
+		va_list ap;
+		va_start(ap, format);
+		vprintf(format, ap);
+		va_end(ap);
+	}
+	return;
+
 }
 
 void debug(const char* format, ...) { // Пока что аналогично trace,
@@ -28,19 +33,24 @@ void debug(const char* format, ...) { // Пока что аналогично tr
 	va_end(ap);
 }
 
-void register_info() {
-	printf(
-		"Registers info: \
-		\nR[0] = %06o R[1] = %06o R[2] = %06o\
-		\nR[3] = %06o R[4] = %06o R[5] = %06o\
-		\nR[6] = %06o R[7] = %06o\n",
-		reg[0], reg[1], reg[2], reg[3],
-		reg[4], reg[5], reg[6], reg[7]
-	);
+void register_info(int command_flag) {
+	if(command_flag) {
+		printf(
+			"Registers info: \
+			\nR[0] = %06o R[1] = %06o R[2] = %06o\
+			\nR[3] = %06o R[4] = %06o R[5] = %06o\
+			\nR[6] = %06o R[7] = %06o\n",
+			reg[0], reg[1], reg[2], reg[3],
+			reg[4], reg[5], reg[6], reg[7]
+		);
+	}
 }
 
-void flags_info() {
-	printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
+void flags_info(int command_flag) {
+	if(command_flag) {
+		printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
+	}
+	return;
 }
 
 void set_n(size_t val, word w) {
@@ -66,9 +76,9 @@ void set_c(size_t val, word w) {
 }
 
 
-void all_info() {
-	register_info();
-	flags_info();
+void all_info(int command_flag) {
+	register_info(command_flag);
+	flags_info(command_flag);
 }
 
 void instruction_print() {
@@ -82,7 +92,20 @@ void get_console_arguments(int argc, char * argv[]) {
 		exit(0);
 	}
 
-	for(int i = 0; i < argc; ++i) {
+	int ind = 0;
+	while(ind = getopt(argc, argv, "t") != -1) {
+
+		if(ind == 1) {
+			command_flag = 1;
+			printf("Tracing mode turned on\n");
+		}
+		else {
+			command_flag = 0;
+		}
+
+	}
+
+	for(int i = optind; i < argc; ++i) {
 		load_file(argv[i]);
 	}
 }

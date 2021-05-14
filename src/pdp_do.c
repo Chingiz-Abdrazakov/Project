@@ -6,17 +6,17 @@
 #include <stdio.h>
 
 void do_halt(Operand op) {
-	trace("\n        ---------halted-----------      \n");
+	trace(command_flag, "\n        ---------halted-----------      \n");
 
-	register_info();
-	flags_info();
+	register_info(command_flag);
+	flags_info(command_flag);
 
 	
 	exit(0);
 }
 
 void do_mov(Operand op) {
-	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
+	trace(command_flag, "      R%o = %06o.\n", op.dd.adr, op.ss.val);
 
 	w_write(op.dd.adr, op.ss.val);
 	//printf("%c", (char)op.ss.val);
@@ -29,7 +29,7 @@ void do_mov(Operand op) {
 }
 
 void do_movb(Operand op) {
-	trace("      R%o = %06o.\n", op.dd.adr, op.ss.val);
+	trace(command_flag, "      R%o = %06o.\n", op.dd.adr, op.ss.val);
 
 	b_write(op.dd.adr, op.ss.val);
 	//printf("%c", (char)op.ss.val);
@@ -40,7 +40,7 @@ void do_movb(Operand op) {
 }
 
 void do_add(Operand op) {
-	trace("      R%o = R%o + R%o.\n", op.dd.adr, op.dd.adr, op.ss.adr);
+	trace(command_flag, "      R%o = R%o + R%o.\n", op.dd.adr, op.dd.adr, op.ss.adr);
 	
 	word w = w_read(op.dd.adr);
 	w += op.ss.val;
@@ -56,27 +56,27 @@ void do_add(Operand op) {
 }
 
 void do_cln(Operand op) {
-	trace(" -- do cln is in work\n");
+	trace(command_flag, " -- do cln is in work\n");
 	set_n(0, op.is_byte);
 }
 
 void do_clc(Operand op) {
-	trace(" -- do clc is in work\n");
+	trace(command_flag, " -- do clc is in work\n");
 	set_c(0, op.is_byte);
 }
 
 void do_clz(Operand op) {
-	trace(" -- do clz is in work\n");
+	trace(command_flag, " -- do clz is in work\n");
 	set_z(0);
 }
 
 void do_clv(Operand op) {
-	trace(" -- do clv is in work\n");
+	trace(command_flag, " -- do clv is in work\n");
 	psw.v = 0;
 }
 
 void do_ccc(Operand op) {
-	trace(" -- do ccc is in work\n");
+	trace(command_flag, " -- do ccc is in work\n");
 
 	set_n(0, op.is_byte);
 	set_z(0);
@@ -85,7 +85,7 @@ void do_ccc(Operand op) {
 }
 
 void do_clr(Operand op) {
-	trace("      mem[%o] = 0.\n", op.dd.adr);
+	trace(command_flag, "      mem[%o] = 0.\n", op.dd.adr);
 	w_write(op.dd.adr, 0);
 
 	// NZVC 0100
@@ -96,14 +96,14 @@ void do_clr(Operand op) {
 
 
 void do_sob(Operand op) {
-	trace("\n");
+	trace(command_flag, "\n");
 
 	reg[op.r] -= 1;
 	if(reg[op.r] != 0) {
 		pc -= 2 * op.nn;
 	}
 
-	trace(" R%o = %o, PC = %o.\n", op.r, reg[op.r], pc);
+	trace(command_flag, " R%o = %o, PC = %o.\n", op.r, reg[op.r], pc);
 
 	// NZVC ----
 }
@@ -121,7 +121,7 @@ void do_br(Operand op) {
 
 	//all_info();
 	
-	trace("		PC = %o.\n", pc);
+	trace(command_flag, "		PC = %o.\n", pc);
 }
 
 void do_beq(Operand op) {
@@ -169,7 +169,7 @@ void do_tst(Operand op) {
 	set_z(op.dd.val);
 	set_c(0, op.is_byte);
 
-	flags_info();
+	flags_info(command_flag);
 }
 
 void do_tstb(Operand op) {
@@ -180,7 +180,7 @@ void do_tstb(Operand op) {
 	set_z(op.dd.val);
 	set_c(0, op.is_byte);
 
-	flags_info();
+	flags_info(command_flag);
 }
 
 void do_cmp(Operand op) {
@@ -202,7 +202,7 @@ void do_cmpb(Operand op) {
 	set_z(test_value);
 	set_c(test_value, op.is_byte);
 
-	flags_info();
+	flags_info(command_flag);
 }
 
 void do_nop(Operand op) {
@@ -210,6 +210,6 @@ void do_nop(Operand op) {
 }
 
 void do_nothing() {
-	trace(" -- unknown command\n");
+	trace(command_flag, " -- unknown command\n");
 	exit(0);
 }

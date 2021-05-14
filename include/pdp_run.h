@@ -52,6 +52,7 @@ extern Operand op;
 extern Command cmd[];
 extern PSW psw;
 extern word __is_byte;
+extern int command_flag;
 
 int compare(word w, word mask, word opcode);
 
