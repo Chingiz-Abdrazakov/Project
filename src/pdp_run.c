@@ -8,8 +8,7 @@
 	
 word __is_byte;
 
-int command_flag;
-
+int command_flag = 0;
 
 
 Command cmd[] = {
@@ -207,8 +206,8 @@ void run() {
 
 	pc = 01000;
 
-	word cur_capacity = 100;
-	char * str = malloc((cur_capacity + 1) * sizeof(char));
+	word capacity = 100;
+	char * str = malloc((capacity + 1) * sizeof(char));
 	word cur_used_capacity = 0;
 
 	while(1) {
@@ -228,24 +227,22 @@ void run() {
 				op = get_params(w, (cmd[i]).params);
 
 				if(cmd[i].name == "halt") {
-					printf("%s\n", str);
-					free(str);
+					do_halt(op, str);
 				}
 
 
 				if(cmd[i].name == "movb" && ((w >> 3) & 7) == 3) {
-					if (cur_used_capacity < cur_capacity) {
+					if (cur_used_capacity < capacity) {
 						str[cur_used_capacity++] = (char)op.ss.val;
+						str[cur_used_capacity] = '\0';
 						//printf("%c\n", (char)op.ss.val);
 
 					} else {
-						str = realloc(str, cur_capacity * sizeof(char));
+						capacity *= 2;
+						str = realloc(str, capacity * sizeof(char));
 					}
 				}
 				(cmd[i]).do_func(op);
-
-
-
 
 				break;
 			}

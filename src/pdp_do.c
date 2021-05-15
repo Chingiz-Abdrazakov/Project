@@ -5,11 +5,15 @@
 #include "pdp_run.h"
 #include <stdio.h>
 
-void do_halt(Operand op) {
+void do_halt(Operand op, char * str) {
 	trace("\n        ---------halted-----------      \n");
 
 	register_info();
 	flags_info();
+
+	trace("\n");
+	printf("%s\n", str);
+	free(str);
 
 	
 	exit(0);
@@ -129,36 +133,48 @@ void do_beq(Operand op) {
 	if(psw.z) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_bne(Operand op) {
 	if(!psw.z) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_bmi(Operand op) {
 	if(!psw.n) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_bpl(Operand op) {
 	if(psw.n) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_bhis(Operand op) {
 	if(!psw.c) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_blo(Operand op) {
 	if(psw.c) {
 		do_br(op);
 	}
+	trace("\n");
+
 }
 
 void do_tst(Operand op) {
@@ -169,7 +185,9 @@ void do_tst(Operand op) {
 	set_z(op.dd.val);
 	set_c(0, op.is_byte);
 
-	flags_info();
+	//flags_info();
+	trace("\n");
+
 }
 
 void do_tstb(Operand op) {
@@ -180,7 +198,9 @@ void do_tstb(Operand op) {
 	set_z(op.dd.val);
 	set_c(0, op.is_byte);
 
-	flags_info();
+	//flags_info();
+	trace("\n");
+
 }
 
 void do_cmp(Operand op) {
@@ -191,6 +211,8 @@ void do_cmp(Operand op) {
 	set_n(test_value, op.is_byte);
 	set_z(test_value);
 	set_c(test_value, op.is_byte);
+	trace("\n");
+
 }
 
 void do_cmpb(Operand op) {
@@ -202,7 +224,10 @@ void do_cmpb(Operand op) {
 	set_z(test_value);
 	set_c(test_value, op.is_byte);
 
-	flags_info();
+
+	//flags_info();
+	trace("\n");
+
 }
 
 void do_nop(Operand op) {

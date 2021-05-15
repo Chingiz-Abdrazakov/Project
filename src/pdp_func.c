@@ -11,11 +11,10 @@ word reg[8]; //registers from R0 to R7
 
 // pc definition
 Operand op;
-int command_flag;
 PSW psw;
 
 void trace(const char * format, ...) {
-	if(!command_flag) {
+	if(command_flag == 0) {
 		return;
 	}
 	va_list ap;
@@ -33,23 +32,19 @@ void debug(const char* format, ...) { // Пока что аналогично tr
 }
 
 void register_info() {
-	if(command_flag) {
-		printf(
-			"Registers info: \
-			\nR[0] = %06o R[1] = %06o R[2] = %06o\
-			\nR[3] = %06o R[4] = %06o R[5] = %06o\
-			\nR[6] = %06o R[7] = %06o\n",
-			reg[0], reg[1], reg[2], reg[3],
-			reg[4], reg[5], reg[6], reg[7]
-		);
-	}
+	trace(
+		"Registers info: \
+		\nR[0] = %06o R[1] = %06o R[2] = %06o\
+		\nR[3] = %06o R[4] = %06o R[5] = %06o\
+		\nR[6] = %06o R[7] = %06o\n",
+		reg[0], reg[1], reg[2], reg[3],
+		reg[4], reg[5], reg[6], reg[7]
+	);
 }
 
 void flags_info() {
-	if(command_flag) {
-		printf("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
-	}
-	return;
+	trace("PSW N = %d, Z = %d, V = %d, C = %d\n", psw.n, psw.z, psw.v, psw.c);
+	
 }
 
 void set_n(size_t val, word w) {
@@ -82,7 +77,7 @@ void all_info() {
 
 void instruction_print() {
 	// Programm usage
-	printf("Usage: pdp11.exe [-t tracing-turn-on] assembly-file\n\n");
+	printf("Usage: pdp11.exe [-t tracing-turn-on] assembly-file\n");
 }
 
 void get_console_arguments(int argc, char * argv[]) {
